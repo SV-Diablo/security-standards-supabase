@@ -88,3 +88,7 @@ Definition of Done, no se pospone.
 
 > Nota: los checks son deterministas por diseño. Lo que la IA escribe pasa por el
 > mismo portero que lo que escribe un humano.
+
+## Licencia
+
+MIT © 2026 Sebastian Villaseca ([SV-Diablo](https://github.com/SV-Diablo)). Creado de forma independiente; libre de usar en proyectos personales y comerciales.
