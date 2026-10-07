@@ -5,7 +5,7 @@
 #
 #   jobs:
 #     gate:
-#       uses: SV-Diablo/security-standards-supabase/.github/workflows/security-gate.yml@main
+#       uses: SV-Diablo/security-standards-supabase/.github/workflows/security-gate.yml@v0.1.0
 #
 # Ventaja sobre copiar el archivo: las mejoras al estándar llegan a todos los
 # proyectos sin re-copiar nada (anti-drift). Requiere que este repo permita
@@ -39,20 +39,24 @@ on:
       SUPABASE_ANON_KEY:
         required: false
 
+# El gate solo lee el código; el caller no puede darle más de esto.
+permissions:
+  contents: read
+
 jobs:
   gate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0 # gitleaks necesita historial
 
       - if: inputs.package_manager == 'pnpm'
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
         with:
           version: ${{ inputs.pnpm_version }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ inputs.node_version }}
           cache: ${{ inputs.package_manager }}
@@ -86,11 +90,11 @@ jobs:
             CFG=semgrep/security-rules.yml
           else
             curl -fsSL -o /tmp/security-rules.yml \
-              https://raw.githubusercontent.com/SV-Diablo/security-standards-supabase/main/semgrep/security-rules.yml \
+              https://raw.githubusercontent.com/SV-Diablo/security-standards-supabase/v0.1.0/semgrep/security-rules.yml \
               || { echo "::error::No pude obtener las reglas semgrep. Copia semgrep/security-rules.yml al repo o haz accesible el repo del estándar."; exit 1; }
             CFG=/tmp/security-rules.yml
           fi
-          python -m pip install --quiet semgrep
+          python -m pip install --quiet semgrep==1.179.0
           echo "── Reglas ERROR (bloqueantes) ──"
           semgrep scan --config "$CFG" --severity ERROR --error --quiet
           echo "── Reglas WARNING (informativas — revisar, no bloquean) ──"
@@ -98,7 +102,7 @@ jobs:
 
       # ── INV-6 — secretos: ni en el árbol ni en el historial ──────────────────
       - name: Gitleaks (scan de secretos)
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

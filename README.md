@@ -82,8 +82,9 @@ Definition of Done, no se pospone.
 3. Activar branch protection exigiendo el check: **build rojo = no merge**.
    Ese es el estándar, no el doc.
 
-> Requisito: este repo debe permitir reusable workflows hacia los repos destino
-> (Settings → Actions → General → Access) o ser público.
+> **Versionado**: el caller apunta a un release (`@v0.1.0`), no a `main`. Así un cambio
+> en el estándar no entra al CI de un proyecto sin revisión; Dependabot propone el
+> bump. Las Actions internas están fijadas por SHA y Semgrep por versión.
 
 > Nota: los checks son deterministas por diseño. Lo que la IA escribe pasa por el
 > mismo portero que lo que escribe un humano.

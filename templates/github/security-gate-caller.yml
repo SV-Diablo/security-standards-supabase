@@ -16,7 +16,9 @@ concurrency:
 
 jobs:
   security:
-    uses: SV-Diablo/security-standards-supabase/.github/workflows/security-gate.yml@main
+    # Fijado a un release: un cambio en main del estándar no entra a tu CI sin que lo revises.
+    # Dependabot (ecosistema github-actions) propone el bump cuando hay versión nueva.
+    uses: SV-Diablo/security-standards-supabase/.github/workflows/security-gate.yml@v0.1.0
     with:
       package_manager: npm # o pnpm
       # Tablas de negocio que deben estar cerradas a anon (test negativo RLS).
